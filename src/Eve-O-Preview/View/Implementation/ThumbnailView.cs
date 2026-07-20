@@ -733,7 +733,10 @@ namespace EveOPreview.View
         
 		private void OnLoseFocus(object sender, EventArgs e)
 		{
-            this.Focus();
+   			if (this._isTopMost)
+    		{ 
+        		this.Focus();
+    		}
 		}
     }
 
