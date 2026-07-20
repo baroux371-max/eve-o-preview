@@ -73,6 +73,8 @@ namespace EveOPreview.View
         private readonly IMediator _mediator;
         private readonly IKeyboardMouseEvents _keyboardMouseEvents;
 
+		private System.Timers.Timer _timer;
+
         #endregion
 
         protected ThumbnailView(IWindowManager windowManager, IThumbnailConfiguration config, IThumbnailManager thumbnailManager, IMediator mediator, IKeyboardMouseEvents keyboardMouseEvents)
@@ -295,6 +297,8 @@ namespace EveOPreview.View
             this.TopMost = enableTopmost;
 
             this._isTopMost = enableTopmost;
+			
+			RemainBringToFront();
         }
 
         public void SetHighlight()
@@ -730,33 +734,26 @@ namespace EveOPreview.View
                 ProcessCustomMouseMode(Cursor.Position, this._rightClickStartPosition);
             }
         }
-        
+
 		private void RemainBringToFront()
 		{
-		    if (this._isTopMost)
-		    {
-				// I found there is a struggle to remain one program over another for z coordinate space so I set it to a timer.
-		        if (_timer == default || !_timer.Enabled)
-		        { 
-		            _timer = new System.Timers.Timer() { Interval = 1000, AutoReset = true, Enabled = true };
-		            _timer.Elapsed += (o, e) =>
-		            {
-		                this.BringToFront();
-		            };
-		            _timer.Start();
-		        }
-		    }
-		    else
-		    {
-		        _timer.Stop();
-		        _timer.Enabled = false;
-		    }
-		}
-		
-		// There is probably a better invocation to use than Click.
-		private void OnRetainFocus_Click(object sender, EventArgs e)
-		{
-		    RemainBringToFront();
+            if (this.TopMost || this._isTopMost)
+            {
+                if (_timer == default || !_timer.Enabled)
+                { 
+                    _timer = new System.Timers.Timer() { Interval = 1000, AutoReset = true, Enabled = true };
+                    _timer.Elapsed += (o, e) =>
+                    {
+                        this.BringToFront();
+                    };
+                    _timer.Start();
+                }
+            }
+            else
+            {
+                _timer.Stop();
+                _timer.Enabled = false;
+            }
 		}
     }
 
