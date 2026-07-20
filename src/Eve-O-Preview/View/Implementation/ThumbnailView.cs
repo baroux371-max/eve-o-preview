@@ -730,6 +730,11 @@ namespace EveOPreview.View
                 ProcessCustomMouseMode(Cursor.Position, this._rightClickStartPosition);
             }
         }
+        
+		private void OnLoseFocus(object sender, EventArgs e)
+		{
+            this.Focus();
+		}
     }
 
     public enum MouseMode
