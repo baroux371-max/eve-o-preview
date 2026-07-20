@@ -102,6 +102,7 @@ namespace EveOPreview.View
             this.Text = "Preview";
             this.TopMost = true;
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDown_Handler);
+            this.Deactivate += new System.EventHandler(this.OnLoseFocus);
             this.MouseEnter += new System.EventHandler(this.MouseEnter_Handler);
             this.MouseLeave += new System.EventHandler(this.MouseLeave_Handler);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseMove_Handler);
