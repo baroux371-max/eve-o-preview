@@ -731,12 +731,32 @@ namespace EveOPreview.View
             }
         }
         
-		private void OnLoseFocus(object sender, EventArgs e)
+		private void RemainBringToFront()
 		{
-   			if (this._isTopMost)
-    		{ 
-        		this.Focus();
-    		}
+		    if (this._isTopMost)
+		    {
+				// I found there is a struggle to remain one program over another for z coordinate space so I set it to a timer.
+		        if (_timer == default || !_timer.Enabled)
+		        { 
+		            _timer = new System.Timers.Timer() { Interval = 1000, AutoReset = true, Enabled = true };
+		            _timer.Elapsed += (o, e) =>
+		            {
+		                this.BringToFront();
+		            };
+		            _timer.Start();
+		        }
+		    }
+		    else
+		    {
+		        _timer.Stop();
+		        _timer.Enabled = false;
+		    }
+		}
+		
+		// There is probably a better invocation to use than Click.
+		private void OnRetainFocus_Click(object sender, EventArgs e)
+		{
+		    RemainBringToFront();
 		}
     }
 
